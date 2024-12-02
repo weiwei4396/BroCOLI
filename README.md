@@ -3,7 +3,9 @@ BroCOLI is
 ## Content
 - [Installation](##Installation)
 - [General Usage](##GeneralUsage)
-    + [Bulk Data](##BulkData)
+    + [Bulk Data](###BulkData)
+        *[Step1 Mapping of the fastq files with minimap2](url)
+    + [Single cell Data](###SinglecellData)
 
 
 
@@ -19,6 +21,8 @@ BroCOLI is
 
 ## General Usage
 ### Bulk Data
+#### Step1 Mapping of the fastq files with minimap2
 
 
 
+### Single cell Data
