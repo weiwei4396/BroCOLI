@@ -7,7 +7,7 @@ BroCOLI is
     + [Bulk Data](#Bulk-Data)
         * [Step1 Mapping of the fastq files with minimap2](#Step1-Mapping-of-the-fastq-files-with-minimap2)
         * [Step2 Transcript identification and quantification](#Step2-Transcript-identification-and-quantification)
-    + [Single cell Data](#Single-Cell-Data)
+    + [Single Cell Data](#Single-Cell-Data)
 
 
 
