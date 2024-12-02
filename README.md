@@ -25,6 +25,7 @@ BroCOLI is
 BroCOLI support all kinds of long RNA data:
 - ONT cDNA/ONT dRNA
 - PacBio
+
 Please align your reads to the reference genome and provide the resulting **sorted SAM file** to BroCOLI.
 
 ## Supported reference data
