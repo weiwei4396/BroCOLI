@@ -13,7 +13,7 @@ BroCOLI is
 
 
 ## Requirements
-C++11 compatible compiler (e.g., g++ 4.8 or later, clang++ 3.3 or later).
+C++11 compatible compiler (e.g. g++ 4.8 or later, clang++ 3.3 or later).
 
 
 ## Installation
