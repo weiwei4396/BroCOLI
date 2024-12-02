@@ -2,8 +2,8 @@
 BroCOLI is 
 ## Content
 - [Installation](##Installation)
-- [General Usage](##General)
-    + Bulk Data
+- [General Usage](##GeneralUsage)
+    + [Bulk Data](##BulkData)
 
 
 
@@ -18,7 +18,7 @@ BroCOLI is
 
 
 ## General Usage
-
+### Bulk Data
 
 
 
