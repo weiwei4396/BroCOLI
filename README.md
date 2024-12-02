@@ -3,28 +3,36 @@ BroCOLI is
 ## Content
 - [Requirements](#Requirements)
 - [Installation](#Installation)
-- [General Usage](#General-Usage)
-    + [Bulk Data](#Bulk-Data)
+- [Supported sequencing data](#Supported-sequencing-data)
+- [Supported reference data](#Supported-reference-data)
+- [General usage](#General-usage)
+    + [Bulk Data](#Bulk-data)
         * [Step1 Mapping of the fastq files with minimap2](#Step1-Mapping-of-the-fastq-files-with-minimap2)
         * [Step2 Transcript identification and quantification](#Step2-Transcript-identification-and-quantification)
-    + [Single Cell Data](#Single-Cell-Data)
+    + [Single Cell Data](#Single-cell-data)
 
 
 
 
 ## Requirements
-C++11 compatible compiler (e.g. g++ 4.8 or later, clang++ 3.3 or later).
+**C++11** compatible compiler (e.g. **g++ 4.8** or later, clang++ 3.3 or later).
 
 
 ## Installation
 
 
+## Supported sequencing data
 
-## General Usage
-### Bulk Data
+
+## Supported reference data
+- Reference genome should be provided in **FASTA** format.
+- Reference annotation is not required, but providing it will yield better results. If a reference gene annotation is available, please provide it in **GTF** format.
+
+## General usage
+### Bulk data
 #### Step1 Mapping of the fastq files with minimap2
 
 
 #### Step2 Transcript identification and quantification
 
-### Single Cell Data
+### Single cell data
