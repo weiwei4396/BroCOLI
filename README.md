@@ -3,11 +3,11 @@ BroCOLI is
 ## Content
 - [Requirements](##Requirements)
 - [Installation](##Installation)
-- [General Usage](##GeneralUsage)
-    + [Bulk Data](###BulkData)
-        * [Step1 Mapping of the fastq files with minimap2](####Step1)
-        * [Step2 Transcript identification and quantification](####Step2)
-    + [Single cell Data](###SinglecellData)
+- [General Usage](##General-Usage)
+    + [Bulk Data](###Bulk-Data)
+        * [Step1 Mapping of the fastq files with minimap2](####Step1-Mapping-of-the-fastq-files-with-minimap2)
+        * [Step2 Transcript identification and quantification](####Step2-transcript-identification-and-quantification)
+    + [Single cell Data](###Single-cell-Data)
 
 
 
