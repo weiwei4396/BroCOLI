@@ -23,7 +23,7 @@ BroCOLI is
 
 ## Supported sequencing data
 BroCOLI support all kinds of long RNA data:
-- ONT cDNA / ONT dRNA
+- ONT cDNA/ONT dRNA
 - PacBio
 Please align your reads to the reference genome and provide the resulting **sorted SAM file** to BroCOLI.
 
