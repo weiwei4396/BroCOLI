@@ -5,6 +5,7 @@ BroCOLI is
 - [General Usage](##GeneralUsage)
     + [Bulk Data](###BulkData)
         * [Step1 Mapping of the fastq files with minimap2](####Step1)
+        * [Step2 transcript identification and quantification](####Step2)
     + [Single cell Data](###SinglecellData)
 
 
@@ -24,5 +25,6 @@ BroCOLI is
 #### Step1 Mapping of the fastq files with minimap2
 
 
+#### Step2 transcript identification and quantification
 
 ### Single cell Data
