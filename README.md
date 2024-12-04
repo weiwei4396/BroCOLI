@@ -17,6 +17,10 @@ BroCOLI is
 
 ## Requirements
 **C++11** compatible compiler (e.g. **g++ 4.8** or later, clang++ 3.3 or later).
+If you are a Linux user, you can check your g++ version with the following code.
+```shell
+g++ --version
+```
 
 
 ## Installation
