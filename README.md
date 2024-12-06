@@ -49,7 +49,21 @@ Please align your reads to the reference genome and provide the resulting **sort
 
 
 
+
+
 ## Reference
 1. c++
+
+
+
+## Contact
+Wei Pan. weipan4396@gmail.com
+Please open an issue if you find bugs.
+
+
+
+
+
+
 
 
