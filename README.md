@@ -10,6 +10,7 @@ BroCOLI is
         * [Step1 Mapping of the fastq files with minimap2](#Step1-Mapping-of-the-fastq-files-with-minimap2)
         * [Step2 Transcript identification and quantification](#Step2-Transcript-identification-and-quantification)
     + [Single cell data](#Single-cell-data)
+- [All Arguments](#All-Arguments)
 - [Reference](#Reference)
 - [Contact](#Contact)
 
