@@ -53,7 +53,7 @@ Please align your reads to the reference genome and provide the resulting **sort
 
 
 ## Reference
-1. [c++11 ThreadPool](https://github.com/progschj/ThreadPool)
+1. [C++11 ThreadPool](https://github.com/progschj/ThreadPool)
 2. Li H. Minimap2: pairwise alignment for nucleotide sequences[J]. Bioinformatics, 2018, 34(18): 3094-3100.
 
 
