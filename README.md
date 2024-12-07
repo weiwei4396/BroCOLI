@@ -55,6 +55,14 @@ samtools sort -o sorted.sam unsorted.sam
 
 
 
+## All Arguments
+```c++
+./BroCOLI -h
+
+```
+
+
+
 
 ## Reference
 1. [C++11 ThreadPool](https://github.com/progschj/ThreadPool)
