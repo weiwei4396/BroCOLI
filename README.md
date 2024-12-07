@@ -6,10 +6,10 @@ BroCOLI is
 - [Supported sequencing data](#Supported-sequencing-data)
 - [Supported reference data](#Supported-reference-data)
 - [General usage](#General-usage)
-    + [Bulk Data](#Bulk-data)
+    + [Bulk data](#Bulk-data)
         * [Step1 Mapping of the fastq files with minimap2](#Step1-Mapping-of-the-fastq-files-with-minimap2)
         * [Step2 Transcript identification and quantification](#Step2-Transcript-identification-and-quantification)
-    + [Single Cell Data](#Single-cell-data)
+    + [Single cell data](#Single-cell-data)
 - [Reference](#Reference)
 - [Contact](#Contact)
 
