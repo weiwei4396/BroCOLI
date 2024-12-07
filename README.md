@@ -44,6 +44,10 @@ Please align your reads to the reference genome and provide the resulting **sort
 #### Step1 Mapping of the fastq files with minimap2
 One alignment tool that could be considered is [Minimap2](https://github.com/lh3/minimap2).
 
+The input **SAM files** need to be **sorted** by samtools before running BroCOLI.
+```shell
+samtools sort -o sorted.sam unsorted.sam
+```
 #### Step2 Transcript identification and quantification
 
 ### Single cell data
