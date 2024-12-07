@@ -42,7 +42,7 @@ Please align your reads to the reference genome and provide the resulting **sort
 ## General usage
 ### Bulk data
 #### Step1 Mapping of the fastq files with minimap2
-One possible alignment tool is [Minimap2](https://github.com/lh3/minimap2).
+One alignment tool that could be considered is [Minimap2](https://github.com/lh3/minimap2).
 
 #### Step2 Transcript identification and quantification
 
