@@ -72,9 +72,9 @@ samtools sort -o sorted.sam unsorted.sam
 
 
 ## Contact
-If you come across any issues or have suggestions, please feel free to contact Wei Pan. weipan4396@gmail.com
+If you come across any issues or have suggestions, please feel free to contact Wei Pan (weipan4396@gmail.com),
 
-Please open an issue if you find bugs.
+or open an issue if you find bugs.
 
 
 
