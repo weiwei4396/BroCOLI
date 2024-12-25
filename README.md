@@ -10,7 +10,7 @@ BroCOLI is
         * [Step1 Mapping of the fastq files with minimap2](#Step1-Mapping-of-the-fastq-files-with-minimap2)
         * [Step2 Transcript identification and quantification](#Step2-Transcript-identification-and-quantification)
     + [Single cell data](#Single-cell-data)
-- [Output specification](#Output-specification)
+- [Output files](#Output-files)
 - [All Arguments](#All-Arguments)
 - [Reference](#Reference)
 - [Contact](#Contact)
@@ -66,8 +66,9 @@ samtools sort -o sorted.sam unsorted.sam
 
 
 ## Output specification
-Bulk
-Single cell
+In bulk data processing, a total of three output files are generated：
+
+
 
 ## All Arguments
 ```c++
