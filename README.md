@@ -74,7 +74,10 @@ After bulk data processing is complete, a total of five files are generated.
 - `counts_gene.txt`: Quantitative results of all genes contained in all samples. The result does not contain rows whose gene_id is NA.
     + Column 1 indicates Ensembl id of each gene.
     + Column 2 to the end indicates the read count of gene in each sample. The number of columns is equal to the number of samples.
-- `updated_annotitions.gtf`:
+- `updated_annotitions.gtf`: An updated GTF annotation that includes both annotated and novel isoforms for the detected transcripts. 
+    + The source column indicates for each isoform whether it is a `novel isoform` and `annotated isoform`.
+    + The information for each isoform is recorded as one line, and the exon information as the next few lines.
+- `compatible_isoform.tsv`: 
 
 
 ## All Arguments
@@ -93,9 +96,7 @@ After bulk data processing is complete, a total of five files are generated.
 
 
 ## Contact
-If you come across any issues or have suggestions, please feel free to contact Wei Pan (weipan4396@gmail.com),
-
-or open an issue if you find bugs.
+If you come across any issues or have suggestions, please feel free to contact Wei Pan (weipan4396@gmail.com), or open an issue if you find bugs.
 
 
 
