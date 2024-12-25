@@ -33,7 +33,7 @@ git clone https://github.com/weiwei4396/BroCOLI.git
 cd BroCOLI
 sh build.sh
 ```
-Once compiled, two executables(**BroCOLI_bulk** and **BroCOLI_sc**) will appear in the **BroCOLI folder**. You can use either the -h (--help) argument or the demo data to verify if the program runs successfully.
+Once compiled, two executables ( **BroCOLI_bulk** and **BroCOLI_sc** ) will appear in the **BroCOLI folder**. You can use either the -h (--help) argument or the demo data to verify if the program runs successfully.
 ```
 ./BroCOLI_bulk -h
 ./BroCOLI_sc -h
