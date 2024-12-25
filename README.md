@@ -27,6 +27,13 @@ g++ --version
 
 
 ## Installation
+```
+git
+```
+```
+cd BroCOLI
+sh build.sh
+```
 
 
 ## Supported sequencing data
