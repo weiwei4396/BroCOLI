@@ -68,16 +68,22 @@ samtools sort -o sorted.sam unsorted.sam
 ## Output files
 After bulk data processing is complete, a total of five files are generated.
 - `counts_transcript.txt`: Quantitative results of all transcripts contained in all samples.
-    + Column 1 indicates Ensembl id of each transcript.
-    + Column 2 indicates Ensembl id of each gene. Note that some novel transcripts are located in genes that are unclear, so BroCOLI represents them as NA when output.
+    + Column 1 indicates Ensembl ID of each transcript.
+    + Column 2 indicates Ensembl ID of each gene. Note that some novel transcripts are located in genes that are unclear, so BroCOLI represents its gene id as NA when output.
     + Column 3 to the end indicates the read count of transcript in each sample. The number of columns is equal to the number of samples.
 - `counts_gene.txt`: Quantitative results of all genes contained in all samples. The result does not contain rows whose gene_id is NA.
-    + Column 1 indicates Ensembl id of each gene.
+    + Column 1 indicates Ensembl ID of each gene.
     + Column 2 to the end indicates the read count of gene in each sample. The number of columns is equal to the number of samples.
 - `updated_annotitions.gtf`: An updated GTF annotation that includes both annotated and novel isoforms for the detected transcripts. 
     + The source column indicates for each isoform whether it is a `novel isoform` and `annotated isoform`.
     + The information for each isoform is recorded as one line, and the exon information as the next few lines.
-- `compatible_isoform.tsv`: 
+- `compatible_isoform.tsv`: The result of each read assigned to the transcript in each sample file.
+    + Column 1 (read_id) represents the read id presented in sam file.
+    + Column 2 (category) specifies the classification of the isoform that each read is associated with.
+    + Column 3 (isoform_id) provides the Ensembl ID of the isoform associated with each read.
+    + Column 4 (gene_id) provides the Ensembl ID of the gene associated with each read.
+    + Column 5 (file) 
+- `file_explain.txt`: 
 
 
 ## All Arguments
