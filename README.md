@@ -65,9 +65,10 @@ samtools sort -o sorted.sam unsorted.sam
 ### Single cell data
 
 
-## Output specification
-In bulk data processing, a total of three output files are generated：
-
+## Output files
+After bulk data processing is complete, a total of five files are generated.
+- `counts_gene.txt`:
+    + Column 1 
 
 
 ## All Arguments
