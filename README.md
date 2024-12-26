@@ -78,7 +78,7 @@ After bulk data processing is complete, a total of five files are generated.
     + The source column indicates for each isoform whether it is a `novel isoform` and `annotated isoform`.
     + The information for each isoform is recorded as one line, and the exon information as the next few lines.
 - `compatible_isoform.tsv`: The result of each read assigned to the transcript in each sample file.
-    + Column 1 (read_id) represents the read id presented in sam file.
+    + Column 1 (read_id) represents the read id presented in sam file. In the case of multiple sample files, column 5 specifies the file associated with each read.
     + Column 2 (category) specifies the classification of the isoform to which each read is associated.
     + Column 3 (isoform_id) provides the Ensembl ID of the isoform associated with each read.
     + Column 4 (gene_id) provides the Ensembl ID of the gene associated with each read.
