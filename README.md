@@ -85,7 +85,8 @@ samtools sort -o sorted.sam unsorted.sam
     + Column 5 (file) contains a mapping between samples and a numerical index, which starts at 0 and ends at the number of samples minus one.
 - `file_explain.txt`:
     + Column 1
-    + Column 2 
+    + Column 2
+
 2.After BroCOLI finishes processing the single cell data, a total of four files will be generated.
 - `counts_transcript_index.txt`: A matrix of ***transcripts × cells***, with quantitative data obtained from each sample. The index denotes the serial number of the sample. The mapping between the sample and its number is provided in the `file_explain.txt` file or in BroCOLI's output history.
     + Column 1 indicates Ensembl ID of each transcript.
