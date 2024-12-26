@@ -66,7 +66,7 @@ samtools sort -o sorted.sam unsorted.sam
 
 
 ## Output files
-After bulk data processing is complete, a total of five files are generated.
+1. After BroCOLI finishes processing the bulk data, a total of five files will be generated.
 - `counts_transcript.txt`: Quantitative results of all transcripts contained in all samples.
     + Column 1 indicates Ensembl ID of each transcript.
     + Column 2 indicates Ensembl ID of each gene. Note that some novel transcripts are located in genes that are unclear, so BroCOLI represents its gene id as NA when output.
@@ -84,7 +84,8 @@ After bulk data processing is complete, a total of five files are generated.
     + Column 4 (gene_id) provides the Ensembl ID of the gene associated with each read.
     + Column 5 (file) 
 - `file_explain.txt`: 
-
+2.After BroCOLI finishes processing the single cell data, a total of four files will be generated.
+- `counts_transcript_index.txt`: A matrix of `***transcripts × cells***`, with quantitative data obtained from each sample.
 
 ## All Arguments
 ```c++
