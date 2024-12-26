@@ -79,7 +79,7 @@ samtools sort -o sorted.sam unsorted.sam
     + The information for each isoform is recorded as one line, and the exon information as the next few lines.
 - `compatible_isoform.tsv`: The result of each read assigned to the transcript in each sample file.
     + Column 1 (read_id) represents the read id presented in sam file. In the case of multiple sample files, column 5 specifies the file associated with each read.
-    + Column 2 (category) specifies the classification of the isoform to which each read is associated. 
+    + Column 2 (category) specifies the classification of the isoform to which each read is associated. BroCOLI divided read into four categories: FSM, ISM, single_exon, and approximate. FSM is full splice match. ISM is incomplete splice match. Single_exon indicates that the isoform has only one exon. Approximate means that reads are approximately grouped into this isoform by Bron-Kerbosch algorithm.
     + Column 3 (isoform_id) provides the Ensembl ID of the isoform associated with each read.
     + Column 4 (gene_id) provides the Ensembl ID of the gene associated with each read.
     + Column 5 (file) contains a numerical index for each sample, and the corresponding representative files can be found in `file_explain.txt`.
@@ -96,6 +96,15 @@ samtools sort -o sorted.sam unsorted.sam
     + The source column indicates for each isoform whether it is a `novel isoform` and `annotated isoform`.
     + The information for each isoform is recorded as one line, and the exon information as the next few lines.
 - `compatible_isoform.tsv`: The result of each read assigned to the transcript in each sample file. In contrast to the bulk results, an additional column for the barcode ID is included to specify the cell from which each read originates.
+    + Column 1 (read_id) represents the read id presented in sam file. In the case of multiple sample files, column 5 specifies the file associated with each read.
+    + Column 2 (category) specifies the classification of the isoform to which each read is associated. BroCOLI divided read into four categories: FSM, ISM, single_exon, and approximate. FSM is full splice match. ISM is incomplete splice match. Single_exon indicates that the isoform has only one exon. Approximate means that reads are approximately grouped into this isoform by Bron-Kerbosch algorithm.
+    + Column 3 (isoform_id) provides the Ensembl ID of the isoform associated with each read.
+    + Column 4 (gene_id) provides the Ensembl ID of the gene associated with each read.
+    + Column 5 (barcode_id) The barcode_id represents the unique identifier of the cell to which the corresponding read is assigned.
+    + Column 6 (file) contains a numerical index for each sample, and the corresponding representative files can be found in `file_explain.txt`.
+- `file_explain.txt`: It contains a mapping between samples and a numerical index, which starts at 0 and ends at the number of samples minus one.
+    + Column 1 provides an index of BroCOLI's given sample
+    + Column 2 corresponds to the absolute path of the SAM file for each sample.
 
 ## All Arguments
 ```c++
