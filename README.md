@@ -66,11 +66,16 @@ samtools sort -o sorted.sam unsorted.sam
 ```
 #### Step2 Transcript identification and quantification
 ```shell
-./
+./BroCOLI_bulk -s sam_files_path -a fasta.fa -g GTF.gtf -o output_path
 ```
 ### Single cell data
+#### Step1 Processing fastq files with Sicelore and wf-single-cell
+[Sicelore](https://github.com/ucagenomix/sicelore-2.1) and [wf-single-cell](https://github.com/epi2me-labs/wf-single-cell) can be used to process FASTQ files into SAM files.
 
-
+#### Step2 Transcript identification and quantification
+```shell
+./BroCOLI_sc -s sam_files_path -a fasta.fa -g GTF.gtf -o output_path
+```
 ## Output files
 1. After BroCOLI finishes processing the **bulk data**, a total of five files will be generated.
 - `counts_transcript.txt`: Quantitative results of all transcripts contained in all samples.
