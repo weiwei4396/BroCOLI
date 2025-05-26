@@ -63,7 +63,9 @@ The input **SAM files** need to be **sorted** by samtools before running BroCOLI
 samtools sort -o sorted.sam unsorted.sam
 ```
 #### Step2 Transcript identification and quantification
-
+```shell
+./
+```
 ### Single cell data
 
 
@@ -112,13 +114,13 @@ samtools sort -o sorted.sam unsorted.sam
 ```c++
 ./BroCOLI -h
 ```
-Arguments: The parameters highlighted in bold black are required for execution.
+```
+Arguments: 
+-s, --sam
+      SAM file path. We recommend using absolute paths. If you have a single file, you can directly provide its absolute path. If you have multiple files, you can specify the path to a folder that contains all the sorted SAM files you want to process. (required)
+-f, (--fasta) ：FASTA file path. FASTA file requires the chromosome names to match the GTF file.
 
-**-s**(--sam) : SAM file path. We recommend using absolute paths. If you have a single file, you can directly provide its absolute path. If you have multiple files, you can specify the path to a folder that contains all the sorted SAM files you want to process.
-
-**-f**(--fasta) ：FASTA file path. FASTA file requires the chromosome names to match the GTF file.
-
-**-o**(--output) : Output file path. 
+**-o** (--output) : Output file path. 
 
 -g(--gtf) ：GTF file path. 
 
@@ -133,7 +135,7 @@ Arguments: The parameters highlighted in bold black are required for execution.
 -t(--thread) : Thread number (default: 4).
 
 -h(--help) : Show this help message.
-
+```
 
 
 
