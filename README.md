@@ -35,6 +35,8 @@ g++ --version
 In order to compile the BroCOLI source in this GitHub repository the following steps can be taken:
 ```
 git clone https://github.com/weiwei4396/BroCOLI.git
+```
+```
 cd BroCOLI
 sh build.sh
 ```
