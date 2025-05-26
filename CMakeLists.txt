@@ -1,3 +1,5 @@
+# CMakeLists by wei pan
+
 #CMake版本要求
 cmake_minimum_required(VERSION 3.10)
 
@@ -6,20 +8,21 @@ project(BroCOLI)
 
 # 设置 C++ 标准为 C++11
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
 
 # 设置线程支持
 find_package(Threads REQUIRED)
 
 # 添加 Eigen 头文件路径
-# 假设 Eigen 库已经安装到 /data/workdir/panw/C_code/source/ 文件夹下
-include_directories(${CMAKE_SOURCE_DIR}/external/Eigen)
-
-# 添加源文件
-set(SOURCES BroCOLI_SC_v2_column_FullLength.cpp)
+include_directories(${CMAKE_SOURCE_DIR}/src)
 
 # 创建可执行文件
-add_executable(BroCOLI ${SOURCES})
+add_executable(BroCOLI_sc src/BroCOLI_sc.cpp)
+target_link_libraries(BroCOLI_sc Threads::Threads)
 
-# 链接线程库
-target_link_libraries(BroCOLI Threads::Threads)
+# 创建可执行文件
+add_executable(BroCOLI_bulk src/BroCOLI_bulk.cpp)
+target_link_libraries(BroCOLI_bulk Threads::Threads)
+
+
 
