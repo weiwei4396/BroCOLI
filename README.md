@@ -118,23 +118,33 @@ samtools sort -o sorted.sam unsorted.sam
 Arguments: 
 -s, --sam
       SAM file path. We recommend using absolute paths. If you have a single file, you can directly provide its absolute path. If you have multiple files, you can specify the path to a folder that contains all the sorted SAM files you want to process. (required)
--f, (--fasta) ：FASTA file path. FASTA file requires the chromosome names to match the GTF file.
 
-**-o** (--output) : Output file path. 
+-f, --fasta
+      FASTA file path. FASTA file requires the chromosome names to match the GTF file. (required)
 
--g(--gtf) ：GTF file path. 
+-o, --output:
+      output folder path. (required)
 
--j(--SJDistance) : Splice junction support read number (default: 2)
+-g, --gtf
+      input annotation file in GTF format. (optional, Recommendation provided)
 
--n(--support) : 
+-n, --support 
+      min perfect read count for all splice junctions of novel isoform. (optional, default:2)
 
--e(--single_exon_boundary) : Belongs to the isoform scope of a single exon. 
+-j, --SJDistance
+      the minimum distance determined as intron. (optional, default:18)
 
--d(--graph_distance) : 
+-e, --single_exon_boundary
+      belongs to the isoform scope of a single exon. (optional, default:60)
 
--t(--thread) : Thread number (default: 4).
+-d, --graph_distance:
+      the distance threshold for constructing the isoform candidate distance graph. (optional, default:60)
 
--h(--help) : Show this help message.
+-t, --thread
+      thread number (optional, default:8).
+
+-h, --help
+      show this help information.
 ```
 
 
