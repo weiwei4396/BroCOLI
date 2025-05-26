@@ -110,6 +110,14 @@ samtools sort -o sorted.sam unsorted.sam
     + Column 1 provides an index of BroCOLI's given sample
     + Column 2 corresponds to the absolute path of the SAM file for each sample.
 
+
+## Test
+
+
+
+
+
+
 ## All Arguments
 ```c++
 ./BroCOLI_bulk -h
