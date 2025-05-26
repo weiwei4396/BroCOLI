@@ -112,7 +112,8 @@ samtools sort -o sorted.sam unsorted.sam
 
 ## All Arguments
 ```c++
-./BroCOLI -h
+./BroCOLI_bulk -h
+./BroCOLI_sc -h
 ```
 ```
 Arguments: 
