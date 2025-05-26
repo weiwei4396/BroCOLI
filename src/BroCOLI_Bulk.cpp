@@ -563,20 +563,48 @@ GTF get_gtf_annotation(std::string& GTFFile_name){
 
         std::vector<int> All_gene_begin;
         std::vector<int> All_gene_end;
+        size_t pos;
+        std::string now_gene_name;
+        std::string ago_gene_name;
+        std::string now_chr;
+        std::string ago_chr;
         
         for (const auto& eachChr:GTFAll_Info.GTF_transcript){
             GTFAll_Info.GTF_gene[eachChr.first] = {};
+            now_chr = eachChr.first;
+
             // GTFAll_Info.GTF_gene_strand[eachChr.first] = {};
-            All_gene_begin.clear();
-            All_gene_end.clear();
-            for (const auto& eachGene:eachChr.second){
-                All_gene_begin.push_back(eachGene.second[0][0]);
-                All_gene_end.push_back(eachGene.second[eachGene.second.size()-1][1]);
+            if (All_gene_begin.size() != 0 && now_chr != ago_chr) {
+                auto min_it = std::min_element(All_gene_begin.begin(), All_gene_begin.end());
+                auto max_it = std::max_element(All_gene_end.begin(), All_gene_end.end());
+                GTFAll_Info.GTF_gene[ago_chr][ago_gene_name][0] = *min_it;
+                GTFAll_Info.GTF_gene[ago_chr][ago_gene_name][1] = *max_it;
+                All_gene_begin.clear();
+                All_gene_end.clear();
+                ago_gene_name = "";
             }
-            auto min_it = std::min_element(All_gene_begin.begin(), All_gene_begin.end());
-            auto max_it = std::max_element(All_gene_end.begin(), All_gene_end.end());
-            GTFAll_Info.GTF_gene[eachChr.first][eachChr.first][0] = *min_it;
-            GTFAll_Info.GTF_gene[eachChr.first][eachChr.first][1] = *max_it;
+            for (const auto& eachGene:eachChr.second) {
+                size_t pos = eachGene.first.find('|');
+                now_gene_name = eachGene.first.substr(0, pos);
+
+                if (ago_gene_name == now_gene_name) {
+                    All_gene_begin.push_back(eachGene.second[0][0]);
+                    All_gene_end.push_back(eachGene.second[eachGene.second.size()-1][1]);
+                } else {
+                    if (ago_gene_name.size() != 0) {
+                        auto min_it = std::min_element(All_gene_begin.begin(), All_gene_begin.end());
+                        auto max_it = std::max_element(All_gene_end.begin(), All_gene_end.end());
+                        GTFAll_Info.GTF_gene[eachChr.first][ago_gene_name][0] = *min_it;
+                        GTFAll_Info.GTF_gene[eachChr.first][ago_gene_name][1] = *max_it;
+                    }
+                    All_gene_begin.clear();
+                    All_gene_end.clear();
+                    All_gene_begin.push_back(eachGene.second[0][0]);
+                    All_gene_end.push_back(eachGene.second[eachGene.second.size()-1][1]);
+                }
+                ago_gene_name = now_gene_name;
+            }
+            ago_chr = now_chr;
         }
 
     } else {
@@ -3266,6 +3294,7 @@ OutputInformation Write_Detection_Transcript2gtf(std::ofstream& Updated_Files, s
     std::vector<std::array<int,2>> itssj;
     std::vector<std::array<int,2>> itsexon;
     std::vector<std::string> TempGene;
+    std::vector<int> TempDist;
     int novel_count = 0;
     std::size_t nameya;
     std::array<int,2> BE;
@@ -3313,31 +3342,27 @@ OutputInformation Write_Detection_Transcript2gtf(std::ofstream& Updated_Files, s
                         TempGene.push_back(every_gene);
                     }
                 }
-                
-                //novel isoform没有候选的基因;
-                if (TempGene.size() == 0){
+                 //novel isoform没有候选的基因;
+                if (TempGene.size() == 0) {
                     first_part = "NA";
 
                 // novel isoform只有1个候选的基因;
                 } else if (TempGene.size() == 1) {
-                    if ((BE[1] - Annogenecovergae[TempGene[0]][1] > 1000) || (Annogenecovergae[TempGene[0]][0] - BE[0] > 1000)){
-                        first_part = "NA";
-                    } else {
-                        first_part = TempGene[0];
-                    }
-                
+                    first_part = TempGene[0];
+
                 //novel isoform有2个以上候选的基因;
                 } else {
+                    TempDist.clear();
                     for (const auto& each_gene:TempGene){
-                        if ((BE[1] - Annogenecovergae[each_gene][1] > 1000) || (Annogenecovergae[each_gene][0] - BE[0] > 1000)){
-                            first_part = "NA";
-                        } else {
-                            first_part = each_gene;
-                            break;
-                        }
-                    }    
+                        int a = abs(BE[1] - Annogenecovergae[each_gene][1]);
+                        int b = abs(Annogenecovergae[each_gene][0] - BE[0]);
+                        TempDist.push_back((a>b)?a:b);
+                    }
+                    auto min_it = std::min_element(TempDist.begin(), TempDist.end());
+                    first_part = TempGene[std::distance(TempDist.begin(), min_it)];  
                 }
                 FinalAnnotations.transcript2gene[itsname] = first_part;
+                
                 {
                     std::unique_lock<std::mutex> lock(updatedGtfMutex);
                     Updated_Files << chrname << '\t' << "novel_isoform" << '\t' << "transcript" << '\t' << BE[0] << '\t' << BE[1] << '\t' << "." << '\t' << High_Strand[nameya] << '\t' << "." << '\t' << "gene_id \"" << first_part << "\"; transcript_id \"" << itsname << "\";" << '\n';
@@ -3387,6 +3412,7 @@ OutputInformation Write_Detection_Transcript2gtf_MultiFiles(std::ofstream& Updat
     std::vector<std::array<int,2>> itssj;
     std::vector<std::array<int,2>> itsexon;
     std::vector<std::string> TempGene;
+    std::vector<int> TempDist;
     int novel_count = 0;
     std::size_t nameya;
     std::array<int,2> BE;
@@ -3461,31 +3487,27 @@ OutputInformation Write_Detection_Transcript2gtf_MultiFiles(std::ofstream& Updat
                     }
                 }
                 
-                //novel isoform没有候选的基因;
+                 //novel isoform没有候选的基因;
                 if (TempGene.size() == 0){
                     first_part = "NA";
 
                 // novel isoform只有1个候选的基因;
                 } else if (TempGene.size() == 1) {
-                    // 这意思是完全在基因里面才能算这个基因的;
-                    if ((BE[1] - Annogenecovergae[TempGene[0]][1] > 1000) || (Annogenecovergae[TempGene[0]][0] - BE[0] > 1000)){
-                        first_part = "NA";
-                    } else {
-                        first_part = TempGene[0];
-                    }
-                
+                    first_part = TempGene[0];
+
                 //novel isoform有2个以上候选的基因;
                 } else {
+                    TempDist.clear();
                     for (const auto& each_gene:TempGene){
-                        if ((BE[1] - Annogenecovergae[each_gene][1] > 1000) || (Annogenecovergae[each_gene][0] - BE[0] > 1000)){
-                            first_part = "NA";
-                        } else {
-                            first_part = each_gene;
-                            break;
-                        }
-                    }    
+                        int a = abs(BE[1] - Annogenecovergae[each_gene][1]);
+                        int b = abs(Annogenecovergae[each_gene][0] - BE[0]);
+                        TempDist.push_back((a>b)?a:b);
+                    }
+                    auto min_it = std::min_element(TempDist.begin(), TempDist.end());
+                    first_part = TempGene[std::distance(TempDist.begin(), min_it)];  
                 }
                 FinalAnnotations.transcript2gene[itsname] = first_part;
+                // std::cout << first_part << std::endl;
                 {
                     std::unique_lock<std::mutex> lock(updatedGtfMutex);
                     Updated_Files << chrname << '\t' << "novel_isoform" << '\t' << "transcript" << '\t' << BE[0] << '\t' << BE[1] << '\t' << "." << '\t' << High_Strand[nameya] << '\t' << "." << '\t' << "gene_id \"" << first_part << "\"; transcript_id \"" << itsname << "\";" << '\n';
@@ -4216,76 +4238,31 @@ std::map<std::string, double> EM_Alg (OutputInformation& FinallyAnnotations, Ind
     //直接输出量化结果;
     if (Indicate_Number.Indicate_Matrix.rows() != 0 && Indicate_Number.Indicate_Matrix.cols() != 0){
         std::string its_name;
-        //初始化每个isoform的概率;
-        Eigen::VectorXd P_Col_init0(Indicate_Number.Order_Transcript_Name_Vector.size());
-        //初始化概率为1除以所有的isoform个数的概率;
-        double InitPvalue = 1.0/(Indicate_Number.Order_Transcript_Name_Vector.size());
-        P_Col_init0.fill(InitPvalue);
-
-        //使用广播机制将列向量B转换为一个与矩阵A相同大小的矩阵
-        Eigen::MatrixXd P0_matrix(Indicate_Number.Indicate_Matrix.rows(), Indicate_Number.Indicate_Matrix.cols());
-        P0_matrix = P_Col_init0.transpose().replicate(Indicate_Number.Indicate_Matrix.rows(), 1);
-
-        //对矩阵A的每一列应用列向量B的每一个元素的乘法
-        Eigen::MatrixXd Z_up(Indicate_Number.Indicate_Matrix.rows(), Indicate_Number.Indicate_Matrix.cols());
-        Z_up = Indicate_Number.Indicate_Matrix.array() * P0_matrix.array();
-        // std::cout << "up:\n" << Z_up.array().col << std::endl;
-        //使用矩阵乘法;
-        Eigen::MatrixXd Z_down(Indicate_Number.Indicate_Matrix.rows(), 1);
-        Z_down = Indicate_Number.Indicate_Matrix * P_Col_init0;
-        // std::cout << "up:\n" << Z_up.rows() << " " << Z_up.cols() << std::endl;
-        // std::cout << "down:\n" << Z_down.rows() << " " << Z_down.cols() << std::endl;
-        
-        //将Z_up除以Z_down, 相当于每一行作归一化;
+        // 初始化概率向量
+        Eigen::VectorXd P_Col_init0 = Eigen::VectorXd::Constant(
+            Indicate_Number.Order_Transcript_Name_Vector.size(),
+            1.0 / Indicate_Number.Order_Transcript_Name_Vector.size() 
+        );
+        // 初始化;
         Eigen::MatrixXd Z(Indicate_Number.Indicate_Matrix.rows(), Indicate_Number.Indicate_Matrix.cols());
-        for (int i = 0; i < Indicate_Number.Indicate_Matrix.rows(); ++i) {
-            Z.row(i) = Z_up.row(i).array() / Z_down(i);
-        }
-        // std::cout << "Z:\n" << Z << std::endl;
-        // std::cout << "Z:\n" << Z.rows() << " " << Z.cols() << std::endl;
-        
-        // std::cout << "看看: " << Z.rows() << " " << Z.cols() << std::endl;
-        // std::cout << Indicate_Number.Cluster_Number.rows() << " " << Indicate_Number.Cluster_Number.cols() << std::endl;   
-
-        //计算个数;
+        Eigen::VectorXd P1(P_Col_init0.size());
         Eigen::MatrixXd AnnoN;
-        AnnoN = ((Indicate_Number.Cluster_Number.transpose()) * Z).transpose();
-        // std::cout << "看看: " << AnnoN.rows() << " " << AnnoN.cols() << std::endl;
-        // std::cout << "AnnoN:\n" << AnnoN << std::endl;
-
-        //更新概率;
-        Eigen::MatrixXd P1(AnnoN.rows(), 1);
-        double sumsum = AnnoN.sum();
-        for (int i = 0; i < AnnoN.rows(); ++i) {
-            P1(i, 0) = AnnoN(i) / sumsum;
-        }
-
-        int CountCyc = 1;
-        // std::cout << "P1:\n" << AnnoN << std::endl;
-        // 计算两个列向量每个元素之间的差值，并取绝对值
-        Eigen::VectorXd diff = (P1 - P_Col_init0).array().abs();
-        // 计算绝对值之和
-        double sum_abs_diff = diff.sum();
-       
-        while ((sum_abs_diff > 1e-2) || CountCyc<20)
-        {
-            CountCyc = CountCyc + 1;
+        int CountCyc = 1; // 初始化为 1，与原代码对齐
+        double sum_abs_diff;
+        do {
+            // 计算 Z 并归一化
+            Z = Indicate_Number.Indicate_Matrix.array().rowwise() * P_Col_init0.transpose().array();
+            Z.array().colwise() /= (Indicate_Number.Indicate_Matrix * P_Col_init0).array();
+            // 计算 AnnoN 并确保列向量形式
+            AnnoN = ((Indicate_Number.Cluster_Number.transpose()) * Z).transpose().reshaped(Indicate_Number.Indicate_Matrix.cols(),1);
+            // 更新概率 P1
+            P1 = AnnoN / AnnoN.sum();
+            // 计算收敛条件
+            sum_abs_diff = (P1 - P_Col_init0).cwiseAbs().sum();
+            // 更新概率向量
             P_Col_init0 = P1;
-            P0_matrix = P_Col_init0.transpose().replicate(Indicate_Number.Indicate_Matrix.rows(), 1);
-            Z_up = Indicate_Number.Indicate_Matrix.array() * P0_matrix.array();
-            Z_down = Indicate_Number.Indicate_Matrix * P_Col_init0;
-            for (int i = 0; i < Indicate_Number.Indicate_Matrix.rows(); ++i) {
-                Z.row(i) = Z_up.row(i).array() / Z_down(i);
-            }
-            AnnoN = ((Indicate_Number.Cluster_Number.transpose()) * Z).transpose();
-            sumsum = AnnoN.sum();
-            for (int i = 0; i < AnnoN.rows(); ++i) {
-                P1(i, 0) = AnnoN(i) / sumsum;
-            }
-            diff = (P1 - P_Col_init0).array().abs();
-            sum_abs_diff = diff.sum();
-
-        }
+            CountCyc = CountCyc + 1;
+        } while ((sum_abs_diff > 5e-2) || (CountCyc <= 10));
     
         //EM结束, 现在需要将这些注释都输出到一个文件里了;
         for (int i = 0; i < AnnoN.rows(); i++){
@@ -4333,80 +4310,35 @@ void EM_Alg_MultiFiles (OutputInformation& FinallyAnnotations,
                         int& FileNumber) {
     //直接输出量化结果;
     if (Indicate_Number.Indicate_Matrix.rows() != 0 && Indicate_Number.Indicate_Matrix.cols() != 0) {
-        std::string its_name;
-        //初始化每个isoform的概率;
-        Eigen::VectorXd P_Col_init0(Indicate_Number.Order_Transcript_Name_Vector.size());
-        //初始化概率为1除以所有的isoform个数的概率;
-        double InitPvalue = 1.0/(Indicate_Number.Order_Transcript_Name_Vector.size());
-        P_Col_init0.fill(InitPvalue);
-
-        //使用广播机制将列向量B转换为一个与矩阵A相同大小的矩阵
-        Eigen::MatrixXd P0_matrix(Indicate_Number.Indicate_Matrix.rows(), Indicate_Number.Indicate_Matrix.cols());
-        P0_matrix = P_Col_init0.transpose().replicate(Indicate_Number.Indicate_Matrix.rows(), 1);
-
-        //对矩阵A的每一列应用列向量B的每一个元素的乘法
-        Eigen::MatrixXd Z_up(Indicate_Number.Indicate_Matrix.rows(), Indicate_Number.Indicate_Matrix.cols());
-        Z_up = Indicate_Number.Indicate_Matrix.array() * P0_matrix.array();
-        // std::cout << "up:\n" << Z_up.array().col << std::endl;
-        //使用矩阵乘法;
-        Eigen::MatrixXd Z_down(Indicate_Number.Indicate_Matrix.rows(), 1);
-        Z_down = Indicate_Number.Indicate_Matrix * P_Col_init0;
-        // std::cout << "up:\n" << Z_up.rows() << " " << Z_up.cols() << std::endl;
-        // std::cout << "down:\n" << Z_down.rows() << " " << Z_down.cols() << std::endl;
-        
-        //将Z_up除以Z_down, 相当于每一行作归一化;
+        // 初始化概率向量
+        Eigen::VectorXd P_Col_init0 = Eigen::VectorXd::Constant(
+            Indicate_Number.Order_Transcript_Name_Vector.size(),
+            1.0 / Indicate_Number.Order_Transcript_Name_Vector.size() 
+        );
+        // 初始化;
         Eigen::MatrixXd Z(Indicate_Number.Indicate_Matrix.rows(), Indicate_Number.Indicate_Matrix.cols());
-        for (int i = 0; i < Indicate_Number.Indicate_Matrix.rows(); ++i) {
-            Z.row(i) = Z_up.row(i).array() / Z_down(i);
-        }
-        // std::cout << "Z:\n" << Z << std::endl;
-        // std::cout << "Z:\n" << Z.rows() << " " << Z.cols() << std::endl;
-        
-        // std::cout << "看看: " << Z.rows() << " " << Z.cols() << std::endl;
-        // std::cout << Indicate_Number.Cluster_Number.rows() << " " << Indicate_Number.Cluster_Number.cols() << std::endl;   
-
-        //计算个数;
+        Eigen::VectorXd P1(P_Col_init0.size());
         Eigen::MatrixXd AnnoN;
-        AnnoN = ((Indicate_Number.Cluster_Number.transpose()) * Z).transpose();
-        // std::cout << "看看: " << AnnoN.rows() << " " << AnnoN.cols() << std::endl;
-        // std::cout << "AnnoN:\n" << AnnoN << std::endl;
+        int CountCyc = 1; // 初始化为 1，与原代码对齐
+        double sum_abs_diff;
 
-        //更新概率;
-        Eigen::MatrixXd P1(AnnoN.rows(), 1);
-        double sumsum = AnnoN.sum();
-        for (int i = 0; i < AnnoN.rows(); ++i) {
-            P1(i, 0) = AnnoN(i) / sumsum;
-        }
-
-        int CountCyc = 1;
-        // std::cout << "P1:\n" << AnnoN << std::endl;
-        // 计算两个列向量每个元素之间的差值，并取绝对值
-        Eigen::VectorXd diff = (P1 - P_Col_init0).array().abs();
-        // 计算绝对值之和
-        double sum_abs_diff = diff.sum();
-       
-        while ((sum_abs_diff > 1e-2) || CountCyc<20)
-        {
-            CountCyc = CountCyc + 1;
+        do {
+            // 计算 Z 并归一化
+            Z = Indicate_Number.Indicate_Matrix.array().rowwise() * P_Col_init0.transpose().array();
+            Z.array().colwise() /= (Indicate_Number.Indicate_Matrix * P_Col_init0).array();
+            // 计算 AnnoN 并确保列向量形式
+            AnnoN = ((Indicate_Number.Cluster_Number.transpose()) * Z).transpose().reshaped(Indicate_Number.Indicate_Matrix.cols(),1);
+            // 更新概率 P1
+            P1 = AnnoN / AnnoN.sum();
+            // 计算收敛条件
+            sum_abs_diff = (P1 - P_Col_init0).cwiseAbs().sum();
+            // 更新概率向量
             P_Col_init0 = P1;
-            P0_matrix = P_Col_init0.transpose().replicate(Indicate_Number.Indicate_Matrix.rows(), 1);
-            Z_up = Indicate_Number.Indicate_Matrix.array() * P0_matrix.array();
-            Z_down = Indicate_Number.Indicate_Matrix * P_Col_init0;
-            for (int i = 0; i < Indicate_Number.Indicate_Matrix.rows(); ++i) {
-                Z.row(i) = Z_up.row(i).array() / Z_down(i);
-            }
-            AnnoN = ((Indicate_Number.Cluster_Number.transpose()) * Z).transpose();
-            sumsum = AnnoN.sum();
-            for (int i = 0; i < AnnoN.rows(); ++i) {
-                P1(i, 0) = AnnoN(i) / sumsum;
-            }
-            diff = (P1 - P_Col_init0).array().abs();
-            sum_abs_diff = diff.sum();
-
-        }
-        // std::cout << "一共更新的次数: " << CountCyc << std::endl;
+            CountCyc = CountCyc + 1;
+        } while ((sum_abs_diff > 5e-2) || (CountCyc <= 10));
     
         //EM结束, 现在需要将这些注释都输出到一个文件里了;
+        std::string its_name;
         for (int i = 0; i < AnnoN.rows(); i++){
             its_name = Indicate_Number.Order_Transcript_Name_Vector[i];
             FinallyAnnotations.File_TranscriptNumber[std::to_string(FileNumber)][its_name] = FinallyAnnotations.File_TranscriptNumber[std::to_string(FileNumber)][its_name] + AnnoN(i,0);
@@ -4781,15 +4713,6 @@ void processGroup(std::streampos& start, std::streampos& end,
                                                 group_information.GroupReadFiles, 
                                                 tracefile, Sj_supportReadNumber, chrchr); //tracemutex;
         
-        // if (chrchr == "SIRV5") {
-        //     for (const auto& eachI:spliceclass.ISM) {
-        //         std::cout << "ISM:" << eachI.first << " 数量是:" << eachI.second.size() << std::endl;
-        //         for (const auto& eachsj:group_information.GroupReadSjs[eachI.second[0]]) {
-        //             std::cout << "[" << eachsj[0] << "," << eachsj[1] << "] ";
-        //         }
-        //         std::cout << std::endl;
-        //     }
-        // }
         file_multiexon_gene_number = DetectQuant(group_annotation, spliceclass, group_information, GraphDis, gtf_full, gtf_splice, updatedgtffile, isoformcountfile, tracefile, fileno); 
     }
     write_genecount_file(fileno, file_singleexon_gene_number, file_multiexon_gene_number, genecountfile);
