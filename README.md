@@ -1,9 +1,7 @@
 # BroCOLI : Bron-Kerbosch calibrator of Long-read Isoform
 ## About
 BroCOLI (Bron-Kerbosch calibrator of Long-read Isoform) leverages efficient algorithms for transcript identification and quantification from long-read RNA-Seq data, supporting both bulk and single-cell applications, while maintaining low memory usage and fast performance for large-scale datasets. 
-
 ![BroCOLI](https://github.com/weiwei4396/BroCOLI/blob/main/figure/BroCOLI_workflow.png)
-
 ## Table of contents
 - [Requirements](#Requirements)
 - [Installation](#Installation)
