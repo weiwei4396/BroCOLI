@@ -114,14 +114,23 @@ samtools sort -o sorted.sam unsorted.sam
 ```
 Arguments: The parameters highlighted in bold black are required for execution.
 **-s**, --sam : SAM file path. We recommend using absolute paths. If you have a single file, you can directly provide its absolute path. If you have multiple files, you can specify the path to a folder that contains all the sorted SAM files you want to process.
+
 **-f**, --fasta ：FASTA file path. FASTA file requires the chromosome names to match the GTF file.
+
 **-o**, --output : Output file path. 
+
 -g, --gtf ：GTF file path. 
+
 -j, --SJDistance :
+
 -n, --support :
+
 -e, --single_exon_boundary :
+
 -d, --graph_distance :
+
 -t, --thread : Thread number (default: 4).
+
 -h, --help : Show this help message.
 
 
