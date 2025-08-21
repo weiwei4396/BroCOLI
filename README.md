@@ -1,4 +1,9 @@
 # BroCOLI : Bron-Kerbosch calibrator of Long-read Isoform
+[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://www.tidyverse.org/lifecycle/#stable)
+[![Maintained?](https://img.shields.io/badge/Maintained%3F-Yes-brightgreen)](https://github.com/weiwei4396/BroCOLI/graphs/contributors)
+[![Install](https://img.shields.io/badge/Install-Github-brightgreen)](#installation)
+
+
 ## About
 BroCOLI (Bron-Kerbosch calibrator of Long-read Isoform) leverages efficient algorithms for transcript identification and quantification from long-read RNA-Seq data, supporting both bulk and single-cell applications, while maintaining low memory usage and fast performance for large-scale datasets. 
 
@@ -12,10 +17,10 @@ BroCOLI (Bron-Kerbosch calibrator of Long-read Isoform) leverages efficient algo
         * [Step1 Mapping of the fastq files with minimap2](#Step1-Mapping-of-the-fastq-files-with-minimap2)
         * [Step2 Transcript identification and quantification](#Step2-Transcript-identification-and-quantification)
     + [Single cell data](#Single-cell-data)
-        * [Step1 Processing fastq files with Sicelore, wf-single-cell, Flexiplex](#Step1-Processing-fastq-files-with-Sicelore-wf-single-cell-Flexiplex)
+        * [Step1 Processing fastq files with Flexiplex, Sicelore, wf-single-cell](#Step1-Processing-fastq-files-with-Flexiplex-Sicelore-wf-single-cell)
         * [Step2 Transcript identification and quantification](#Step2-Transcript-identification-and-quantification)
+- [Example usage](#Example-usage)
 - [Output files](#Output-files)
-- [Test](#Test)
 - [All Arguments](#All-Arguments)
 - [Reference](#Reference)
 - [Contact](#Contact)
@@ -70,21 +75,88 @@ minimap2 -ax splice -ub -k14 -w 4 --secondary=no -t 20 ref.fasta combined.fastq 
 ```
 The input **SAM files** need to be **sorted** by samtools before running BroCOLI.
 ```shell
-samtools sort -o sorted.sam unsorted.sam
+samtools sort -@ 20 -o sorted.sam unsorted.sam
 ```
 #### Step2 Transcript identification and quantification
-If there is only **one sam file**, provide the absolute path to the SAM file using the **-s parameter**. If there are **multiple sam files**, set the **-s parameter** to the directory containing all the sorted SAM files.
+If there is only **one sam file**, provide the absolute path to the SAM file using the **-s parameter**. If there are multiple SAM files, set the **-s parameter** to the directory containing all the sorted SAM files. Alternatively, you can provide **a TXT/TSV file where each line specifies the absolute path to an input SAM file**. The output results will follow the same order as listed in the TXT/TSV file.
+```
+(i)                     (ii)                 (iii)    
+input_reads.sam     ─── input_directory  ─── input.txt(.tsv)
+                        ├── sample0.sam      │   ├── sample0.sam
+                        └── sample1.sam      │   ├── sample1.sam
+                                             │   ├── sample2.sam
+```
 ```shell
 ./BroCOLI_bulk -s sam_files_path -f fasta.fa -g GTF.gtf -o output_path
 ```
+
+
 ### Single cell data
-#### Step1 Processing fastq files with Sicelore, wf-single-cell, Flexiplex
-[Sicelore](https://github.com/ucagenomix/sicelore-2.1) and [wf-single-cell](https://github.com/epi2me-labs/wf-single-cell) can be used to process FASTQ files into SAM files.
+#### Step1 Processing fastq files with Flexiplex, Sicelore, wf-single-cell
+[Flexiplex](https://github.com/DavidsonGroup/flexiplex), [Sicelore-2.1](https://github.com/ucagenomix/sicelore-2.1) and [wf-single-cell](https://github.com/epi2me-labs/wf-single-cell) can be used to process FASTQ files into SAM files.
+
+**1.Flexiplex**
+You can visit its GitHub page to directly download and use it, as well as learn more about its detailed usage."
+
+**First**, assign reads - short reads or single-cell long reads - to cellular barcodes
+```shell
+flexiplex -d 10x3v3 -p 20 -k cellRangerbarcodes.tsv reads.fastq > new_reads.fastq
+```
+**Second**, mapping.
+```shell
+minimap2 -ax splice -ub -k14 -w 4 --secondary=no -t 20 ref.fasta new_reads.fastq > new_reads.sam
+samtools sort -@ 20 -o new_reads_sorted.sam new_reads.sam
+```
+
+**2.Sicelore-2.1**
+
+Before you run sicelore, you need to set up the required JAVA environment for it.
+
+Next, we use it. You can also go to its GitHub page to learn more about its detailed usage. 
+
+**First**, scan Nanopore reads - assign cell barcodes.
+```shell
+java -jar -Xmx80g <path>/NanoporeBC_UMI_finder-2.1.jar scanfastq -d <directory to start recursive search for fastq files> -o outPutDirectory --bcEditDistance 1 --cellRangerBCs cellRangerbarcodes.tsv
+```
+The **--cellRangerBCs** parameter is optional. If Illumina data are available, a TSV file containing cell barcodes (e.g., from Cell Ranger) can be provided, which will improve the accuracy of barcode identification.
+
+**Second**, mapping
+```shell
+minimap2 -ax splice -uf --sam-hit-only -t 20 fastq_pass.fastq.gz | samtools view -bS -@ 20 - | samtools sort -m 2G -@ 20 -o passed.bam -&& samtools index passed.bam
+```
+
+**Third**, UMI assignment
+```shell
+java -jar -Xmx80g <path>/NanoporeBC_UMI_finder.jar assignumis --inFileNanopore <Nanopore Bam> --outfile <cell bc and UMI assigned output bam file>
+```
+
+The output bam file generated by the cell bc and UMI assignment is converted to a sam file, which is then used as the input for step 2.
+
+
+**3.wf-single-cell**
+
+
 
 #### Step2 Transcript identification and quantification
+The input data is similar to the bulk.
+```
+(i)                     (ii)                 (iii)    
+input_reads.sam     ─── input_directory  ─── input.txt(.tsv)
+                        ├── sample0.sam      │   ├── sample0.sam
+                        └── sample1.sam      │   ├── sample1.sam
+                                             │   ├── sample2.sam
+```
+
 ```shell
 ./BroCOLI_sc -s sam_files_path -f fasta.fa -g GTF.gtf -o output_path
 ```
+
+
+## Example usage
+
+
+
+
 ## Output files
 1. After BroCOLI finishes processing the **bulk data**, a total of five files will be generated.
 - `counts_transcript.txt`: Quantitative results of all transcripts contained in all samples.
@@ -126,8 +198,6 @@ If there is only **one sam file**, provide the absolute path to the SAM file usi
     + Column 1 provides an index of BroCOLI's given sample
     + Column 2 corresponds to the absolute path of the SAM file for each sample.
 
-
-## Test
 
 
 
