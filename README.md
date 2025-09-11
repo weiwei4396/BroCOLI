@@ -36,7 +36,7 @@ If you are a Linux user, you can check your g++ version with the following code.
 g++ --version
 ```
 
-## Installation
+## 🛠️ Installation
 In order to compile the BroCOLI source in this GitHub repository the following steps can be taken:
 ```
 git clone https://github.com/weiwei4396/BroCOLI.git
@@ -62,7 +62,7 @@ BroCOLI support all kinds of long RNA data:
 - Reference genome should be provided in **FASTA** format.
 - Reference annotation is not required, but providing it will yield better results. If a reference gene annotation is available, please provide it in **GTF** format.
 
-## General usage
+## 📘 General usage
 ### Bulk data
 #### Step1 Mapping of the fastq files with minimap2
 One alignment tool that could be considered is [Minimap2](https://github.com/lh3/minimap2). This command can output a SAM file without secondary alignments:
