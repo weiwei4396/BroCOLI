@@ -36,15 +36,15 @@ g++ --version
 
 ## 🛠️ Installation
 In order to compile the BroCOLI source in this GitHub repository the following steps can be taken:
-```
+```console
 git clone https://github.com/weiwei4396/BroCOLI.git
 ```
-```
+```console
 cd BroCOLI
 sh build.sh
 ```
 Once compiled, two executables ( **BroCOLI_bulk** and **BroCOLI_sc** ) will appear in the **BroCOLI folder**. You can use either the -h (--help) argument or the demo data to verify if the program runs successfully.
-```
+```console
 ./BroCOLI_bulk -h
 ./BroCOLI_sc -h
 ```
