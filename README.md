@@ -26,13 +26,11 @@ BroCOLI (Bron-Kerbosch calibrator of Long-read Isoform) leverages efficient algo
 - [Contact](#Contact)
 
 
-
-
 ## Requirements
 **C++11** compatible compiler (e.g. **g++ 4.8** or later).
 
 If you are a Linux user, you can check your g++ version with the following code.
-```shell
+```console
 g++ --version
 ```
 
