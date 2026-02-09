@@ -95,7 +95,7 @@ input_reads.sam     ─── input_directory  ─── input.txt(.tsv)
 
 
 **1.Flexiplex**
-You can visit its GitHub page to directly download and use it, as well as learn more about its detailed usage."
+You can visit its GitHub page to directly download and use it, as well as learn more about its detailed usage.
 
 **First**, assign reads - short reads or single-cell long reads - to cellular barcodes
 ```shell
