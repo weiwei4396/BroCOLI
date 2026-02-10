@@ -32,7 +32,7 @@ Once compiled, two executables ( **BroCOLI_bulk** and **BroCOLI_sc** ) will appe
 ./BroCOLI_sc -h
 ```
 
-## :book Documentation
+## 📘Documentation
 
 Full documentation can be found [here](https://weiwei4396.github.io/BroCOLI/).
 
