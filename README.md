@@ -10,9 +10,7 @@ BroCOLI (Bron-Kerbosch calibrator of Long-read Isoform) leverages efficient algo
 ## Table of contents
 - [Requirements](#Requirements)
 - [Installation](#Installation)
-- [Supported sequencing data](#Supported-sequencing-data)
-- [Supported reference data](#Supported-reference-data)
-- [Output files](#Output-files)
+- [Documentation](#Documentation)
 - [Reference](#Reference)
 - [Contact](#Contact)
 
