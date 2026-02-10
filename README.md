@@ -7,14 +7,6 @@
 ## About
 BroCOLI (Bron-Kerbosch calibrator of Long-read Isoform) leverages efficient algorithms for transcript identification and quantification from long-read RNA-Seq data, supporting both bulk and single-cell applications, while maintaining low memory usage and fast performance for large-scale datasets. 
 
-## Table of contents
-- [Requirements](#Requirements)
-- [Installation](#Installation)
-- [Documentation](#Documentation)
-- [Reference](#Reference)
-- [Contact](#Contact)
-
-
 ## Requirements
 BroCOLI requires a C++11 compatible compiler (e.g., g++ 4.8 or later).
 
