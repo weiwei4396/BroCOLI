@@ -35,28 +35,9 @@ Once compiled, two executables ( **BroCOLI_bulk** and **BroCOLI_sc** ) will appe
 ./BroCOLI_sc -h
 ```
 
-## Supported sequencing data
-BroCOLI support all kinds of long RNA data:
-- ONT cDNA/ONT dRNA
-- PacBio
+## 📘 Documentation
 
-**Please align your reads to the reference genome and provide the resulting sorted SAM file to BroCOLI.**
-
-## Supported reference data
-- Reference genome should be provided in **FASTA** format.
-- Reference annotation is not required, but providing it will yield better results. If a reference gene annotation is available, please provide it in **GTF** format.
-
-[Document](https://weiwei4396.github.io/BroCOLI/)
-
-
-
-
-
-
-
-
-
-
+Full documentation can be found [here](https://weiwei4396.github.io/BroCOLI/).
 
 ## Reference
 1. [C++11 ThreadPool](https://github.com/progschj/ThreadPool)
