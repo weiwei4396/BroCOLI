@@ -40,7 +40,7 @@ Once compiled, two executables ( BroCOLI_bulk and BroCOLI_sc ) will appear in th
 * Reference annotation is not mandatory, but providing it will yield better results. Please provide it in **GTF** format.
 
 ## Usage
-> :memo: Go to [Tutorials](http://localhost:8000/Tutorials/)
+> :memo: Go to [Tutorials](https://github.com/weiwei4396/BroCOLI/blob/main/docs/Tutorials.md)
 
 
 
