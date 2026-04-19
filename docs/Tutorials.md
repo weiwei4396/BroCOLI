@@ -3,7 +3,7 @@ icon: material/lightning-bolt
 ---
 
 # BroCOLI Tutorials
-Welcome to the gsMap Tutorials. In this section, we provide detailed examples and guides to help you understand and utilize gsMap effectively. 
+Welcome to the BroCOLI Tutorials. In this section, we provide detailed examples and guides to help you understand and utilize BroCOLI effectively. 
 
 ``` mermaid
 %%{init: {'themeVariables': { 'fontSize': '20px' }}}%%
