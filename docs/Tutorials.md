@@ -43,7 +43,7 @@ To run BroCOLI, you should provide:
 
 ## :book: BroCOLI General Usage
 
-### Bulk
+### Bulk Data
 * [x] Step1 Mapping of the fastq files with minimap2
 
 ```shella
@@ -81,16 +81,16 @@ input_reads.sam     ─── input_directory      ─── input.txt(.tsv)
 ```
 
 ```shell
-./BroCOLI_bulk -s sam_files_path -f ref.fasta -g GTF.gtf -o output_path
+./BroCOLI_bulk -t 8 -s sam_files_path -f ref.fasta -g GTF.gtf -o output_path
 ```
 
 
-### Single cell and spatial
+### Single Cell and Spatial Data 
 
 * [x] Step1 Processing fastq files with BroCOLI
 
 ```shell
-./preBroCOLI -q visium -p 20 -w barcode_whitelist.txt raw.fastq > new.fastq
+./preBroCOLI -q visium -p 32 -w barcode_whitelist.txt raw.fastq > new.fastq
 ```
 
 * -q indicates the data type. such as, [visium, 10x3v3, magicseq].
@@ -150,6 +150,12 @@ input_reads.sam     ─── input_directory      ─── input.txt(.tsv)
 
 The processing is identical to Step 1 in the bulk workflow.
 
+```shell
+minimap2 -ax splice -ub --secondary=no -t 20 ref.fasta preBroCOLI.fastq > preBroCOLI.sam
+samtools sort -@ 20 -o preBroCOLI_sorted.sam preBroCOLI.sam
+```
+
+
 * [x] Step3 Transcript identification and quantification
 
 The input data is similar to the bulk.
@@ -161,7 +167,7 @@ input_reads.sam     ─── input_directory      ─── input.txt(.tsv)
                                                  └── sample2.sam
 ```
 ```shell
-./BroCOLI_sc -s sam_files_path -f ref.fasta -g GTF.gtf -o output_path
+./BroCOLI_sc -t 8 -s sam_files_path -f ref.fasta -g GTF.gtf -o output_path
 ```
 
 
@@ -178,7 +184,7 @@ input_reads.sam     ─── input_directory      ─── input.txt(.tsv)
 * Single cell
 
 ```shell
-./BroCOLI_sc
+./BroCOLI_sc -t 8 -s MouseBrain_sorted.sam -g mouse.gtf -f mouse.fasta -o TestResult
 ```
 
 
