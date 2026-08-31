@@ -2,7 +2,7 @@
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 [![Maintained?](https://img.shields.io/badge/Maintained%3F-Yes-red)](https://github.com/weiwei4396/BroCOLI/graphs/contributors)
 [![Install](https://img.shields.io/badge/Install-Github-blue)](#installation)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv2-ff6b35.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv2-ff6b35.svg)](https://www.gnu.org/licenses/old-licenses/gpl-3.0.html)
 
 ## About
 BroCOLI (Bron-Kerbosch calibrator of Long-read Isoform) leverages efficient algorithms for transcript identification and quantification from long-read RNA-Seq data, supporting both bulk and single-cell applications, while maintaining low memory usage and fast performance for large-scale datasets. 
